@@ -1,0 +1,1011 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Daphyne Lash">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236B5344'/%3E%3Cpath d='M50 80 Q30 60 50 20 Q70 60 50 80' fill='%23D9CBBF'/%3E%3C/svg%3E">
+<title>Daphyne Lash Manager</title>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+:root {
+  --bg-body: #F3EFE9; --bg-sidebar: #EBE5DF; --bg-card: #FFFFFF;
+  --text-primary: #4A3B32; --text-secondary: #8C7A6E;
+  --accent-dark: #6B5344; --accent-light: #D9CBBF;
+  --green-soft: #5B7B5E; --green-bg: #E8EFE8;
+  --orange-soft: #D18E54; --orange-bg: #FAEFE3;
+  --red-danger: #C2504A; --red-bg: #FBEAE9;
+  --border-color: #E6E0DA;
+  --shadow: 0 10px 25px rgba(74, 59, 50, 0.05);
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+body { display: flex; background-color: var(--bg-body); min-height: 100vh; color: var(--text-primary); background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 Q30 15 15 30 Q30 30 30 60' stroke='%23e6e0da' stroke-width='1' fill='none' opacity='0.4'/%3E%3C/svg%3E"); }
+
+/* SIDEBAR */
+.sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 30px 20px; display: flex; flex-direction: column; border-right: 1px solid rgba(0,0,0,0.03); position: relative; overflow: hidden; padding-top: max(30px, env(safe-area-inset-top)); flex-shrink: 0; }
+.sidebar::after { content: ''; position: absolute; bottom: -20px; left: -30px; width: 200px; height: 200px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 90 Q40 50 50 10 Q60 50 50 90' fill='none' stroke='%235B7B5E' stroke-width='1.5' opacity='0.2'/%3E%3Cpath d='M50 70 Q30 60 20 50' fill='none' stroke='%235B7B5E' stroke-width='1.5' opacity='0.2'/%3E%3C/svg%3E"); background-repeat: no-repeat; transform: rotate(15deg); z-index: 0; }
+.logo-area { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; font-weight: 600; font-size: 1.1rem; color: var(--text-primary); z-index: 1; }
+.logo-icon { background-color: var(--accent-dark); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+nav { z-index: 1; }
+.menu-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; color: var(--text-secondary); transition: all 0.3s ease; font-size: 0.9rem; font-weight: 500; }
+.menu-item i { font-size: 1.2rem; }
+.menu-item:hover, .menu-item.active { background-color: var(--bg-card); color: var(--text-primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+.menu-item.active i { color: var(--green-soft); }
+
+/* MAIN */
+.main-content { flex: 1; padding: 40px 50px; overflow-y: auto; padding-bottom: max(40px, env(safe-area-inset-bottom)); }
+header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+.page-title h1 { font-size: 1.8rem; font-weight: 500; color: var(--text-primary); margin-bottom: 5px; }
+.page-title p { color: var(--text-secondary); font-size: 0.9rem; }
+.header-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary, .btn-secondary, .btn-danger, .btn-whatsapp { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 30px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.3s ease; border: none; text-decoration: none; }
+.btn-primary { background-color: var(--accent-dark); color: white; }
+.btn-primary:hover { background-color: #5a4437; transform: translateY(-2px); }
+.btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--accent-dark); }
+.btn-secondary:hover { background-color: var(--bg-card); }
+.btn-danger { background-color: transparent; color: var(--red-danger); border: 1px solid var(--red-danger); }
+.btn-danger:hover { background-color: var(--red-danger); color: white; }
+.btn-whatsapp { background-color: #25D366; color: white; }
+.btn-whatsapp:hover { background-color: #1DA851; transform: translateY(-2px); }
+
+/* SCREENS */
+.screen { display: none; animation: fadeIn 0.4s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* CARDS */
+.summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+.card { background-color: var(--bg-card); padding: 22px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+.card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+.card-header i { font-size: 1.2rem; color: var(--accent-light); }
+.card-value { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); }
+
+/* WEEK NAV */
+.week-navigation { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 25px; }
+.nav-arrow { background-color: var(--bg-card); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--accent-dark); font-size: 1.2rem; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+.nav-arrow:hover { background-color: var(--accent-dark); color: white; }
+.week-label { font-size: 1.1rem; font-weight: 600; min-width: 220px; text-align: center; }
+
+/* AGENDA */
+.week-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+.day-column { background-color: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); min-height: 500px; min-width: 150px; display: flex; flex-direction: column; }
+.day-header { padding: 15px; text-align: center; border-bottom: 1px solid var(--border-color); font-weight: 600; background-color: #FAFAFA; border-radius: 12px 12px 0 0; }
+.day-header.hoje { background-color: var(--green-bg); color: var(--green-soft); }
+.day-header span { display: block; font-size: 0.75rem; color: var(--text-secondary); font-weight: 400; text-transform: uppercase; margin-top: 4px; }
+.day-slots { padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.slot-item { background-color: var(--green-bg); border-left: 3px solid var(--green-soft); padding: 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+.slot-item:hover { transform: translateX(3px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+.slot-time { font-weight: bold; }
+.slot-client { margin: 3px 0; }
+.slot-proc { color: var(--text-secondary); font-size: 0.75rem; }
+
+/* TABELAS */
+.data-table { width: 100%; border-collapse: collapse; background-color: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.data-table th, .data-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border-color); }
+.data-table th { background-color: #FAFAFA; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr { cursor: pointer; transition: 0.2s; }
+.data-table tbody tr:hover { background-color: #FAFAFA; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.badge-green { background-color: var(--green-bg); color: var(--green-soft); }
+.badge-orange { background-color: var(--orange-bg); color: var(--orange-soft); }
+.badge-red { background-color: var(--red-bg); color: var(--red-danger); }
+
+/* CLIENTES */
+.client-search { position: relative; margin-bottom: 25px; max-width: 400px; }
+.client-search input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid var(--border-color); border-radius: 30px; font-size: 16px; background-color: var(--bg-card); box-shadow: var(--shadow); }
+.client-search input:focus { outline: none; border-color: var(--green-soft); }
+.client-search i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 1.2rem; }
+.clients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.client-card-item { background-color: var(--bg-card); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; cursor: pointer; transition: all 0.3s ease; }
+.client-card-item:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(74, 59, 50, 0.1); border-color: var(--green-soft); }
+.client-avatar { width: 50px; height: 50px; background-color: var(--green-bg); color: var(--green-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.1rem; flex-shrink: 0; }
+.client-info-list h4 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.client-info-list p { font-size: 0.8rem; color: var(--text-secondary); }
+
+/* PAINEL LATERAL */
+.panel-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(74, 59, 50, 0.4); backdrop-filter: blur(4px); display: none; z-index: 1000; justify-content: flex-end; }
+.panel-overlay.active { display: flex; }
+.panel { background: var(--bg-card); width: 100%; max-width: 500px; height: 100%; overflow-y: auto; padding: 40px; animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.panel-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color); }
+.panel-avatar { width: 70px; height: 70px; background-color: var(--green-bg); color: var(--green-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.6rem; flex-shrink: 0; }
+.panel-title { flex: 1; }
+.panel-title h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
+.panel-title p { font-size: 0.85rem; color: var(--text-secondary); }
+.panel-close { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-secondary); }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px; }
+.stat-box { background-color: #FAFAFA; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
+.stat-box .stat-value { font-size: 1.1rem; font-weight: 700; color: var(--accent-dark); margin-bottom: 4px; }
+.stat-box .stat-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+.panel-section { margin-bottom: 30px; }
+.panel-section h3 { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+.history-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background-color: var(--green-bg); border-left: 3px solid var(--green-soft); border-radius: 8px; }
+.history-item-info h5 { font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
+.history-item-info p { font-size: 0.8rem; color: var(--text-secondary); }
+.history-item-value { font-weight: 700; color: var(--green-soft); font-size: 0.95rem; }
+.notes-area { width: 100%; min-height: 100px; padding: 15px; border: 1px solid var(--border-color); border-radius: 12px; font-size: 16px; background-color: #FAFAFA; resize: vertical; font-family: var(--font-main); }
+.notes-area:focus { outline: none; border-color: var(--green-soft); background-color: white; }
+.panel-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+.panel-actions .btn-whatsapp { flex: 1; justify-content: center; }
+
+/* MODAL */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(74, 59, 50, 0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1001; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal-content { background: var(--bg-card); width: 100%; max-width: 500px; padding: 35px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto; animation: popIn 0.3s ease; }
+@keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.modal-header h2 { font-weight: 500; font-size: 1.3rem; }
+.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 13px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 16px; background-color: #FAFAFA; color: var(--text-primary); font-family: var(--font-main); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--green-soft); background-color: white; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-actions .btn-primary { flex: 1; justify-content: center; }
+
+/* BOTÃO FLUTUANTE */
+.balance-btn { position: fixed; bottom: max(30px, env(safe-area-inset-bottom)); right: 40px; background-color: var(--accent-dark); color: white; padding: 15px 25px; border-radius: 30px; border: none; box-shadow: 0 10px 20px rgba(107, 83, 68, 0.3); display: flex; align-items: center; gap: 10px; font-size: 1rem; cursor: pointer; transition: 0.3s; z-index: 100; }
+.balance-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(107, 83, 68, 0.4); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); grid-column: 1 / -1; }
+.empty-state i { font-size: 3rem; color: var(--accent-light); margin-bottom: 15px; display: block; }
+
+/* RESPONSIVO */
+@media (max-width: 1200px) { .summary-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 768px) { 
+  body { flex-direction: column; }
+  .sidebar { width: 100%; padding: 12px; flex-direction: row; overflow-x: auto; align-items: center; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .logo-area { margin-bottom: 0; margin-right: 15px; font-size: 0.9rem; }
+  .logo-icon { width: 30px; height: 30px; font-size: 1rem; }
+  nav { display: flex; gap: 5px; }
+  .menu-item { padding: 10px; margin-bottom: 0; }
+  .menu-item span { display: none; }
+  .main-content { padding: 20px; }
+  .summary-cards { grid-template-columns: 1fr; }
+  header { flex-direction: column; align-items: flex-start; gap: 15px; }
+  .header-actions { width: 100%; }
+  .header-actions button, .header-actions a { flex: 1; justify-content: center; }
+  .data-table th, .data-table td { padding: 10px; font-size: 0.8rem; }
+  .data-table .hide-mobile { display: none; }
+  .balance-btn { right: 15px; bottom: 15px; padding: 12px 18px; font-size: 0.85rem; }
+  .modal-content { padding: 25px; }
+  .panel { padding: 25px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .form-row-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo-area">
+    <div class="logo-icon"><i class="ph ph-flower-lotus"></i></div>
+    Daphyne Lash
+  </div>
+  <nav>
+    <div class="menu-item active" onclick="mudarTela('visao-geral', this)"><i class="ph ph-squares-four"></i> <span>Visão Geral</span></div>
+    <div class="menu-item" onclick="mudarTela('agenda-semanal', this)"><i class="ph ph-calendar-blank"></i> <span>Agenda</span></div>
+    <div class="menu-item" onclick="mudarTela('clientes', this)"><i class="ph ph-users"></i> <span>Clientes</span></div>
+    <div class="menu-item" onclick="mudarTela('compras', this)"><i class="ph ph-shopping-cart"></i> <span>Compras</span></div>
+    <div class="menu-item" onclick="mudarTela('estoque', this)"><i class="ph ph-package"></i> <span>Estoque</span></div>
+    <div class="menu-item" onclick="mudarTela('financeiro', this)"><i class="ph ph-currency-circle-dollar"></i> <span>Financeiro</span></div>
+  </nav>
+</aside>
+
+<main class="main-content">
+
+  <!-- VISÃO GERAL -->
+  <div id="visao-geral" class="screen active">
+    <header>
+      <div class="page-title"><h1>Visão geral</h1><p>Acompanhe o desempenho do seu estúdio hoje.</p></div>
+     <div class="header-actions">
+  <button class="btn-secondary" onclick="exportarBackup()"><i class="ph ph-download-simple"></i> Exportar Backup</button>
+  <button class="btn-secondary" onclick="document.getElementById('input-importar').click()"><i class="ph ph-upload-simple"></i> Importar</button>
+  <input type="file" id="input-importar" accept=".json" style="display:none;" onchange="importarBackup(event)">
+  <button class="btn-primary" onclick="abrirModalAgendamento()"><i class="ph ph-plus"></i> Novo Agendamento</button>
+</div>
+    </header>
+    <section class="summary-cards">
+      <div class="card"><div class="card-header"><span>Agendamentos Hoje</span> <i class="ph ph-calendar-check"></i></div><div class="card-value" id="card-hoje">0</div></div>
+      <div class="card"><div class="card-header"><span>Receita do Dia</span> <i class="ph ph-trend-up"></i></div><div class="card-value" id="card-receita-dia">R$ 0,00</div></div>
+      <div class="card"><div class="card-header"><span>Clientes Atendidas</span> <i class="ph ph-users"></i></div><div class="card-value" id="card-clientes">0</div></div>
+      <div class="card"><div class="card-header"><span>Gastos com Insumos (Mês)</span> <i class="ph ph-shopping-cart"></i></div><div class="card-value" id="card-gastos-mes">R$ 0,00</div></div>
+    </section>
+    <div style="background: white; border-radius: 16px; padding: 40px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow);">
+      <i class="ph ph-sparkle" style="font-size: 3rem; color: var(--green-soft); margin-bottom: 15px;"></i>
+      <h2 style="font-weight: 500; margin-bottom: 10px;">Bem-vinda ao seu painel</h2>
+      <p style="color: var(--text-secondary);">Tudo é salvo automaticamente neste dispositivo.</p>
+    </div>
+  </div>
+
+  <!-- AGENDA SEMANAL -->
+  <div id="agenda-semanal" class="screen">
+    <header>
+      <div class="page-title"><h1>Agenda Semanal</h1><p>Visualização de Segunda a Sábado.</p></div>
+      <div class="header-actions"><button class="btn-primary" onclick="abrirModalAgendamento()"><i class="ph ph-plus"></i> Agendar</button></div>
+    </header>
+    <div class="week-navigation">
+      <button class="nav-arrow" onclick="mudarSemana(-1)"><i class="ph ph-caret-left"></i></button>
+      <div class="week-label" id="week-label">Carregando...</div>
+      <button class="nav-arrow" onclick="mudarSemana(1)"><i class="ph ph-caret-right"></i></button>
+    </div>
+    <div class="week-grid" id="week-container"></div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="clientes" class="screen">
+    <header>
+      <div class="page-title"><h1>Clientes</h1><p>Histórico e informações das suas clientes.</p></div>
+      <div class="header-actions"><button class="btn-primary" onclick="abrirModalCliente()"><i class="ph ph-user-plus"></i> Cadastrar Cliente</button></div>
+    </header>
+    <div class="client-search"><i class="ph ph-magnifying-glass"></i><input type="text" id="busca-cliente" placeholder="Buscar cliente pelo nome..." oninput="renderizarClientes()"></div>
+    <div class="clients-grid" id="clients-container"></div>
+  </div>
+
+  <!-- COMPRAS DE INSUMOS -->
+  <div id="compras" class="screen">
+    <header>
+      <div class="page-title"><h1>Compras de Insumos</h1><p>Registre suas compras de materiais.</p></div>
+      <div class="header-actions"><button class="btn-primary" onclick="abrirModalCompra()"><i class="ph ph-plus"></i> Nova Compra</button></div>
+    </header>
+    <section class="summary-cards" style="margin-bottom: 25px;">
+      <div class="card"><div class="card-header"><span>Total do Mês</span> <i class="ph ph-calendar"></i></div><div class="card-value" id="compra-mes">R$ 0,00</div></div>
+      <div class="card"><div class="card-header"><span>Total do Ano</span> <i class="ph ph-chart-line-up"></i></div><div class="card-value" id="compra-ano">R$ 0,00</div></div>
+      <div class="card"><div class="card-header"><span>Total de Compras</span> <i class="ph ph-receipt"></i></div><div class="card-value" id="compra-count">0</div></div>
+      <div class="card"><div class="card-header"><span>A Pagar (Parcelas)</span> <i class="ph ph-hourglass"></i></div><div class="card-value" id="compra-pagar">R$ 0,00</div></div>
+    </section>
+    <table class="data-table">
+      <thead><tr><th>Data</th><th>Loja</th><th class="hide-mobile">Produto</th><th>Valor</th><th class="hide-mobile">Pagamento</th></tr></thead>
+      <tbody id="compras-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- ESTOQUE -->
+  <div id="estoque" class="screen">
+    <header>
+      <div class="page-title"><h1>Estoque de Produtos</h1><p>Controle seus materiais em tempo real.</p></div>
+      <div class="header-actions"><button class="btn-primary" onclick="abrirModalProduto()"><i class="ph ph-plus"></i> Novo Produto</button></div>
+    </header>
+    <section class="summary-cards" style="margin-bottom: 25px;">
+      <div class="card"><div class="card-header"><span>Total de Itens</span> <i class="ph ph-package"></i></div><div class="card-value" id="estoque-total">0</div></div>
+      <div class="card"><div class="card-header"><span>Tipos Diferentes</span> <i class="ph ph-stack"></i></div><div class="card-value" id="estoque-tipos">0</div></div>
+      <div class="card"><div class="card-header"><span>Estoque Baixo</span> <i class="ph ph-warning"></i></div><div class="card-value" id="estoque-baixo" style="color: var(--red-danger);">0</div></div>
+      <div class="card"><div class="card-header"><span>Valor em Estoque</span> <i class="ph ph-currency-circle-dollar"></i></div><div class="card-value" id="estoque-valor">R$ 0,00</div></div>
+    </section>
+    <table class="data-table">
+      <thead><tr><th>Produto</th><th class="hide-mobile">Tipo</th><th>Qtd</th><th class="hide-mobile">Validade</th><th>Status</th></tr></thead>
+      <tbody id="estoque-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- FINANCEIRO -->
+  <div id="financeiro" class="screen">
+    <header><div class="page-title"><h1>Financeiro</h1><p>Detalhamento de entradas.</p></div></header>
+    <table class="data-table">
+      <thead><tr><th>Data</th><th>Cliente</th><th class="hide-mobile">Procedimento</th><th>Valor</th><th>Status</th></tr></thead>
+      <tbody id="finance-table-body"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<button class="balance-btn" onclick="mostrarSaldoMes()"><i class="ph ph-wallet"></i> Saldo do Mês</button>
+
+<!-- MODAL AGENDAMENTO -->
+<div class="modal-overlay" id="modal-agendamento">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="modal-agendamento-title">Novo Agendamento</h2><button class="close-btn" onclick="fecharModal('modal-agendamento')"><i class="ph ph-x"></i></button></div>
+    <form id="form-agendamento" onsubmit="salvarAgendamento(event)">
+      <input type="hidden" id="ag-id">
+      <div class="form-group"><label>Nome da Cliente</label><input type="text" id="ag-nome" required placeholder="Ex: Maria Silva" list="lista-clientes-nomes"></div>
+      <datalist id="lista-clientes-nomes"></datalist>
+      <div class="form-group"><label>Procedimento</label>
+        <select id="ag-procedimento" required>
+          <option value="">Selecione...</option>
+          <option>Volume Brasileiro</option><option>Volume 4D</option><option>Volume Fox</option>
+          <option>Design Simples</option><option>Manutenção</option><option>Design com Henna</option><option>Buço</option><option>Remoção</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Data</label><input type="date" id="ag-data" required></div>
+        <div class="form-group"><label>Horário</label><input type="time" id="ag-horario" required></div>
+      </div>
+      <div class="form-group"><label>Valor (R$)</label><input type="number" id="ag-valor" required placeholder="0.00" step="0.01" min="0"></div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary"><i class="ph ph-check"></i> Salvar</button>
+        <button type="button" class="btn-danger" id="btn-excluir-ag" onclick="excluirAgendamento()" style="display:none;"><i class="ph ph-trash"></i> Excluir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL CLIENTE -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="modal-cliente-title">Cadastrar Cliente</h2><button class="close-btn" onclick="fecharModal('modal-cliente')"><i class="ph ph-x"></i></button></div>
+    <form id="form-cliente" onsubmit="salvarCliente(event)">
+      <input type="hidden" id="cli-id-original">
+      <div class="form-group"><label>Nome Completo *</label><input type="text" id="cli-nome" required></div>
+      <div class="form-group"><label>WhatsApp (com DDD)</label><input type="tel" id="cli-whatsapp" placeholder="Ex: 11999998888"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="cli-nascimento"></div>
+        <div class="form-group"><label>Instagram</label><input type="text" id="cli-instagram" placeholder="@usuario"></div>
+      </div>
+      <div class="form-group"><label>Observações gerais</label><textarea id="cli-observacoes" class="notes-area" style="min-height:80px;" placeholder="Alergias, preferências, etc."></textarea></div>
+      <div class="modal-actions"><button type="submit" class="btn-primary"><i class="ph ph-check"></i> Salvar</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL COMPRA -->
+<div class="modal-overlay" id="modal-compra">
+  <div class="modal-content">
+    <div class="modal-header"><h2>Nova Compra de Insumo</h2><button class="close-btn" onclick="fecharModal('modal-compra')"><i class="ph ph-x"></i></button></div>
+    <form id="form-compra" onsubmit="salvarCompra(event)">
+      <input type="hidden" id="cp-id">
+      <div class="form-row">
+        <div class="form-group"><label>Data *</label><input type="date" id="cp-data" required></div>
+        <div class="form-group"><label>Loja *</label><input type="text" id="cp-loja" required placeholder="Ex: Loja da Bella"></div>
+      </div>
+      <div class="form-group"><label>Produto(s) Comprado(s) *</label><textarea id="cp-produto" class="notes-area" style="min-height:70px;" required placeholder="Ex: Cola 5ml, Cílios 0.07..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Valor Total (R$) *</label><input type="number" id="cp-valor" required step="0.01" min="0"></div>
+        <div class="form-group"><label>Forma de Pagamento *</label>
+          <select id="cp-pagamento" required onchange="toggleParcelas()">
+            <option value="">Selecione...</option>
+            <option>Pix</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option><option>Boleto</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" id="div-parcelas" style="display:none;"><label>Parcelado em quantas vezes?</label><input type="number" id="cp-parcelas" min="2" max="24" value="2"></div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary"><i class="ph ph-check"></i> Salvar</button>
+        <button type="button" class="btn-danger" id="btn-excluir-cp" onclick="excluirCompra()" style="display:none;"><i class="ph ph-trash"></i> Excluir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PRODUTO ESTOQUE -->
+<div class="modal-overlay" id="modal-produto">
+  <div class="modal-content">
+    <div class="modal-header"><h2>Novo Produto no Estoque</h2><button class="close-btn" onclick="fecharModal('modal-produto')"><i class="ph ph-x"></i></button></div>
+    <form id="form-produto" onsubmit="salvarProduto(event)">
+      <input type="hidden" id="pr-id">
+      <div class="form-group"><label>Nome do Produto *</label><input type="text" id="pr-nome" required placeholder="Ex: Cola Profissional 5ml"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Tipo *</label>
+          <select id="pr-tipo" required>
+            <option value="">Selecione...</option>
+            <option>Cola</option><option>Cílios</option><option>Pinça</option><option>Removedor</option>
+            <option>Shampoo</option><option>Primer</option><option>Máscara</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Marca</label><input type="text" id="pr-marca"></div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group"><label>Quantidade *</label><input type="number" id="pr-quantidade" required min="0"></div>
+        <div class="form-group"><label>Estoque Mínimo</label><input type="number" id="pr-minimo" min="0" value="2"></div>
+        <div class="form-group"><label>Valor Unitário (R$)</label><input type="number" id="pr-valor" step="0.01" min="0" placeholder="0.00"></div>
+      </div>
+      <div class="form-group"><label>Validade</label><input type="date" id="pr-validade"></div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary"><i class="ph ph-check"></i> Salvar</button>
+        <button type="button" class="btn-danger" id="btn-excluir-pr" onclick="excluirProduto()" style="display:none;"><i class="ph ph-trash"></i> Excluir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PAINEL DE PERFIL DA CLIENTE -->
+<div class="panel-overlay" id="panel-cliente">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-avatar" id="panel-avatar">MS</div>
+      <div class="panel-title">
+        <h2 id="panel-nome">Nome</h2>
+        <p id="panel-sub">Cliente</p>
+      </div>
+      <button class="panel-close" onclick="fecharPainel()"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-value" id="panel-visitas">0</div><div class="stat-label">Visitas</div></div>
+      <div class="stat-box"><div class="stat-value" id="panel-total">R$ 0</div><div class="stat-label">Total Gasto</div></div>
+      <div class="stat-box"><div class="stat-value" id="panel-fav" style="font-size:0.7rem;">-</div><div class="stat-label">Favorito</div></div>
+    </div>
+    <div class="panel-section">
+      <h3><i class="ph ph-clock-counter-clockwise"></i> Histórico de Procedimentos</h3>
+      <div class="history-list" id="panel-historico"></div>
+    </div>
+    <div class="panel-section">
+      <h3><i class="ph ph-note-pencil"></i> Anotações</h3>
+      <textarea class="notes-area" id="panel-notas" placeholder="Anotações sobre esta cliente..."></textarea>
+      <button class="btn-primary" style="margin-top:10px; justify-content:center; width:100%;" onclick="salvarNotasCliente()"><i class="ph ph-floppy-disk"></i> Salvar Anotações</button>
+    </div>
+    <div class="panel-actions">
+      <a class="btn-whatsapp" id="panel-whatsapp" target="_blank"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>
+      <button class="btn-secondary" onclick="editarClienteAtual()"><i class="ph ph-pencil"></i> Editar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ======================== BANCO DE DADOS ======================== */
+let agendamentos = JSON.parse(localStorage.getItem('lash_agendamentos')) || [];
+let clientes = JSON.parse(localStorage.getItem('lash_clientes')) || [];
+let compras = JSON.parse(localStorage.getItem('lash_compras')) || [];
+let estoque = JSON.parse(localStorage.getItem('lash_estoque')) || [];
+let offsetSemana = 0;
+let clienteAtualId = null;
+
+function salvarTudo() {
+  localStorage.setItem('lash_agendamentos', JSON.stringify(agendamentos));
+  localStorage.setItem('lash_clientes', JSON.stringify(clientes));
+  localStorage.setItem('lash_compras', JSON.stringify(compras));
+  localStorage.setItem('lash_estoque', JSON.stringify(estoque));
+}
+
+function formatarMoeda(v) { return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+function formatarData(d) { if(!d) return '-'; const [a,m,dia] = d.split('-'); return `${dia}/${m}/${a}`; }
+function iniciais(nome) { return nome.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
+
+/* ======================== NAVEGAÇÃO ======================== */
+function mudarTela(id, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) { document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active')); el.classList.add('active'); }
+  if(id === 'visao-geral') atualizarDashboard();
+  if(id === 'agenda-semanal') renderizarAgenda();
+  if(id === 'clientes') renderizarClientes();
+  if(id === 'compras') renderizarCompras();
+  if(id === 'estoque') renderizarEstoque();
+  if(id === 'financeiro') renderizarFinanceiro();
+}
+
+function abrirModal(id) { document.getElementById(id).classList.add('active'); }
+function fecharModal(id) { document.getElementById(id).classList.remove('active'); document.querySelectorAll('#'+id+' form').forEach(f=>f.reset()); }
+
+/* ======================== DASHBOARD ======================== */
+function atualizarDashboard() {
+  const hoje = new Date().toISOString().split('T')[0];
+  const doDia = agendamentos.filter(a => a.data === hoje);
+  const receita = doDia.reduce((s,a) => s + a.valor, 0);
+  const mesAtual = new Date().getMonth();
+  const anoAtual = new Date().getFullYear();
+  const gastosMes = compras.filter(c => {
+    const d = new Date(c.data + 'T00:00:00');
+    return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+  }).reduce((s,c) => s + c.valor, 0);
+  document.getElementById('card-hoje').textContent = doDia.length;
+  document.getElementById('card-receita-dia').textContent = formatarMoeda(receita);
+  document.getElementById('card-clientes').textContent = new Set(doDia.map(a=>a.nome)).size;
+  document.getElementById('card-gastos-mes').textContent = formatarMoeda(gastosMes);
+}
+
+/* ======================== AGENDAMENTOS ======================== */
+function abrirModalAgendamento() {
+  document.getElementById('modal-agendamento-title').textContent = 'Novo Agendamento';
+  document.getElementById('ag-id').value = '';
+  document.getElementById('form-agendamento').reset();
+  document.getElementById('btn-excluir-ag').style.display = 'none';
+  document.getElementById('ag-data').value = new Date().toISOString().split('T')[0];
+  // Preencher datalist com nomes de clientes
+  const dl = document.getElementById('lista-clientes-nomes');
+  dl.innerHTML = clientes.map(c => `<option value="${c.nome}">`).join('');
+  abrirModal('modal-agendamento');
+}
+
+function abrirModalEdicaoAgendamento(id) {
+  const a = agendamentos.find(x => x.id === id);
+  if(!a) return;
+  document.getElementById('modal-agendamento-title').textContent = 'Editar Agendamento';
+  document.getElementById('ag-id').value = a.id;
+  document.getElementById('ag-nome').value = a.nome;
+  document.getElementById('ag-procedimento').value = a.procedimento;
+  document.getElementById('ag-data').value = a.data;
+  document.getElementById('ag-horario').value = a.horario;
+  document.getElementById('ag-valor').value = a.valor;
+  document.getElementById('btn-excluir-ag').style.display = 'inline-flex';
+  const dl = document.getElementById('lista-clientes-nomes');
+  dl.innerHTML = clientes.map(c => `<option value="${c.nome}">`).join('');
+  abrirModal('modal-agendamento');
+}
+
+function salvarAgendamento(e) {
+  e.preventDefault();
+  const id = document.getElementById('ag-id').value;
+  const dados = {
+    id: id ? parseInt(id) : Date.now(),
+    nome: document.getElementById('ag-nome').value.trim(),
+    procedimento: document.getElementById('ag-procedimento').value,
+    data: document.getElementById('ag-data').value,
+    horario: document.getElementById('ag-horario').value,
+    valor: parseFloat(document.getElementById('ag-valor').value)
+  };
+  if(id) {
+    const idx = agendamentos.findIndex(a => a.id == id);
+    agendamentos[idx] = dados;
+  } else {
+    agendamentos.push(dados);
+    // Se a cliente ainda não existe, cria automaticamente
+    if(!clientes.find(c => c.nome.toLowerCase() === dados.nome.toLowerCase())) {
+      clientes.push({ id: Date.now(), nome: dados.nome, whatsapp: '', nascimento: '', instagram: '', observacoes: '', notas: '' });
+    }
+  }
+  salvarTudo();
+  fecharModal('modal-agendamento');
+  atualizarDashboard(); renderizarAgenda(); renderizarClientes(); renderizarFinanceiro();
+}
+
+function excluirAgendamento() {
+  const id = document.getElementById('ag-id').value;
+  if(!id || !confirm('Excluir este agendamento?')) return;
+  agendamentos = agendamentos.filter(a => a.id != id);
+  salvarTudo();
+  fecharModal('modal-agendamento');
+  atualizarDashboard(); renderizarAgenda(); renderizarFinanceiro();
+}
+
+/* ======================== AGENDA SEMANAL ======================== */
+function mudarSemana(dir) { offsetSemana += dir; renderizarAgenda(); }
+
+function renderizarAgenda() {
+  const container = document.getElementById('week-container');
+  const label = document.getElementById('week-label');
+  container.innerHTML = '';
+  const dias = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const hoje = new Date();
+  const dw = hoje.getDay();
+  const diff = hoje.getDate() - dw + (dw === 0 ? -6 : 1);
+  const segBase = new Date(hoje.setDate(diff));
+  const seg = new Date(segBase); seg.setDate(segBase.getDate() + offsetSemana * 7);
+  const sab = new Date(seg); sab.setDate(seg.getDate() + 5);
+  const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  label.textContent = `${seg.getDate()} ${meses[seg.getMonth()]} - ${sab.getDate()} ${meses[sab.getMonth()]}`;
+  const hojeStr = new Date().toISOString().split('T')[0];
+  for(let i = 0; i < 6; i++) {
+    const d = new Date(seg); d.setDate(seg.getDate() + i);
+    const dStr = d.toISOString().split('T')[0];
+    const col = document.createElement('div');
+    col.className = 'day-column';
+    const isHoje = dStr === hojeStr ? 'hoje' : '';
+    col.innerHTML = `<div class="day-header ${isHoje}">${dias[i]}<span>${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}</span></div><div class="day-slots"></div>`;
+    const slots = col.querySelector('.day-slots');
+    const ags = agendamentos.filter(a => a.data === dStr).sort((a,b) => a.horario.localeCompare(b.horario));
+    if(ags.length === 0) {
+      slots.innerHTML = `<div style="text-align:center; color:#ccc; font-size:0.8rem; margin-top:20px;">Livre</div>`;
+    } else {
+      ags.forEach(a => {
+        const s = document.createElement('div');
+        s.className = 'slot-item';
+        s.onclick = () => abrirModalEdicaoAgendamento(a.id);
+        s.innerHTML = `<div class="slot-time">${a.horario}</div><div class="slot-client">${a.nome}</div><div class="slot-proc">${a.procedimento}</div>`;
+        slots.appendChild(s);
+      });
+    }
+    container.appendChild(col);
+  }
+}
+
+/* ======================== CLIENTES ======================== */
+function renderizarClientes() {
+  const cont = document.getElementById('clients-container');
+  const busca = (document.getElementById('busca-cliente')?.value || '').toLowerCase();
+  cont.innerHTML = '';
+  const filtrados = clientes.filter(c => c.nome.toLowerCase().includes(busca)).sort((a,b) => a.nome.localeCompare(b.nome));
+  if(filtrados.length === 0) {
+    cont.innerHTML = `<div class="empty-state"><i class="ph ph-users"></i><p>Nenhuma cliente encontrada.</p></div>`;
+    return;
+  }
+  filtrados.forEach(c => {
+    const ags = agendamentos.filter(a => a.nome.toLowerCase() === c.nome.toLowerCase());
+    const fav = ags.length ? ags.reduce((acc, a) => { acc[a.procedimento] = (acc[a.procedimento]||0)+1; return acc; }, {}) : {};
+    const favorito = Object.keys(fav).sort((a,b) => fav[b]-fav[a])[0] || '-';
+    const div = document.createElement('div');
+    div.className = 'client-card-item';
+    div.onclick = () => abrirPainelCliente(c.id);
+    div.innerHTML = `
+      <div class="client-avatar">${iniciais(c.nome)}</div>
+      <div class="client-info-list">
+        <h4>${c.nome}</h4>
+        <p>${ags.length} atendimento${ags.length !== 1 ? 's' : ''} • ${formatarMoeda(ags.reduce((s,a)=>s+a.valor,0))}</p>
+        <p style="color:var(--green-soft); margin-top:3px; font-size:0.75rem;"><i class="ph ph-star"></i> ${favorito}</p>
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function abrirModalCliente() {
+  document.getElementById('modal-cliente-title').textContent = 'Cadastrar Cliente';
+  document.getElementById('cli-id-original').value = '';
+  document.getElementById('form-cliente').reset();
+  abrirModal('modal-cliente');
+}
+
+function salvarCliente(e) {
+  e.preventDefault();
+  const idOriginal = document.getElementById('cli-id-original').value;
+  const nome = document.getElementById('cli-nome').value.trim();
+  const dados = {
+    nome,
+    whatsapp: document.getElementById('cli-whatsapp').value.trim(),
+    nascimento: document.getElementById('cli-nascimento').value,
+    instagram: document.getElementById('cli-instagram').value.trim(),
+    observacoes: document.getElementById('cli-observacoes').value
+  };
+  if(idOriginal) {
+    const c = clientes.find(x => x.id == idOriginal);
+    if(c) Object.assign(c, dados);
+  } else {
+    if(clientes.find(c => c.nome.toLowerCase() === nome.toLowerCase())) {
+      alert('Já existe uma cliente com este nome.');
+      return;
+    }
+    clientes.push({ id: Date.now(), ...dados, notas: '' });
+  }
+  salvarTudo();
+  fecharModal('modal-cliente');
+  renderizarClientes();
+  if(clienteAtualId) abrirPainelCliente(clienteAtualId);
+}
+
+function abrirPainelCliente(id) {
+  const c = clientes.find(x => x.id === id);
+  if(!c) return;
+  clienteAtualId = id;
+  const ags = agendamentos.filter(a => a.nome.toLowerCase() === c.nome.toLowerCase()).sort((a,b) => b.data.localeCompare(a.data));
+  document.getElementById('panel-avatar').textContent = iniciais(c.nome);
+  document.getElementById('panel-nome').textContent = c.nome;
+  document.getElementById('panel-sub').textContent = c.instagram ? c.instagram : 'Cliente';
+  document.getElementById('panel-visitas').textContent = ags.length;
+  document.getElementById('panel-total').textContent = formatarMoeda(ags.reduce((s,a)=>s+a.valor,0));
+  const fav = ags.length ? ags.reduce((acc, a) => { acc[a.procedimento] = (acc[a.procedimento]||0)+1; return acc; }, {}) : {};
+  const favorito = Object.keys(fav).sort((a,b) => fav[b]-fav[a])[0] || '-';
+  document.getElementById('panel-fav').textContent = favorito;
+  // Histórico
+  const hist = document.getElementById('panel-historico');
+  hist.innerHTML = '';
+  if(ags.length === 0) {
+    hist.innerHTML = `<p style="color:var(--text-secondary); font-size:0.85rem;">Nenhum procedimento registrado ainda.</p>`;
+  } else {
+    ags.forEach(a => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `
+        <div class="history-item-info">
+          <h5>${a.procedimento}</h5>
+          <p>${formatarData(a.data)} às ${a.horario}</p>
+        </div>
+        <div class="history-item-value">${formatarMoeda(a.valor)}</div>
+      `;
+      hist.appendChild(item);
+    });
+  }
+  // Notas
+  document.getElementById('panel-notas').value = c.notas || c.observacoes || '';
+  // WhatsApp
+  const btnW = document.getElementById('panel-whatsapp');
+  if(c.whatsapp) {
+    const num = c.whatsapp.replace(/\D/g,'');
+    btnW.href = `https://wa.me/55${num}`;
+    btnW.style.display = 'flex';
+  } else {
+    btnW.style.display = 'none';
+  }
+  document.getElementById('panel-cliente').classList.add('active');
+}
+
+function fecharPainel() {
+  document.getElementById('panel-cliente').classList.remove('active');
+  clienteAtualId = null;
+}
+
+function salvarNotasCliente() {
+  const c = clientes.find(x => x.id === clienteAtualId);
+  if(!c) return;
+  c.notas = document.getElementById('panel-notas').value;
+  salvarTudo();
+  alert('Anotações salvas!');
+}
+
+function editarClienteAtual() {
+  const c = clientes.find(x => x.id === clienteAtualId);
+  if(!c) return;
+  fecharPainel();
+  document.getElementById('modal-cliente-title').textContent = 'Editar Cliente';
+  document.getElementById('cli-id-original').value = c.id;
+  document.getElementById('cli-nome').value = c.nome;
+  document.getElementById('cli-whatsapp').value = c.whatsapp || '';
+  document.getElementById('cli-nascimento').value = c.nascimento || '';
+  document.getElementById('cli-instagram').value = c.instagram || '';
+  document.getElementById('cli-observacoes').value = c.observacoes || '';
+  abrirModal('modal-cliente');
+}
+
+/* ======================== COMPRAS ======================== */
+function abrirModalCompra() {
+  document.getElementById('form-compra').reset();
+  document.getElementById('cp-id').value = '';
+  document.getElementById('btn-excluir-cp').style.display = 'none';
+  document.getElementById('div-parcelas').style.display = 'none';
+  document.getElementById('cp-data').value = new Date().toISOString().split('T')[0];
+  abrirModal('modal-compra');
+}
+
+function toggleParcelas() {
+  const pag = document.getElementById('cp-pagamento').value;
+  document.getElementById('div-parcelas').style.display = pag === 'Crédito' ? 'block' : 'none';
+}
+
+function salvarCompra(e) {
+  e.preventDefault();
+  const id = document.getElementById('cp-id').value;
+  const pag = document.getElementById('cp-pagamento').value;
+  const dados = {
+    id: id ? parseInt(id) : Date.now(),
+    data: document.getElementById('cp-data').value,
+    loja: document.getElementById('cp-loja').value.trim(),
+    produto: document.getElementById('cp-produto').value.trim(),
+    valor: parseFloat(document.getElementById('cp-valor').value),
+    pagamento: pag,
+    parcelas: pag === 'Crédito' ? parseInt(document.getElementById('cp-parcelas').value) : 1
+  };
+  if(id) {
+    const idx = compras.findIndex(c => c.id == id);
+    compras[idx] = dados;
+  } else compras.push(dados);
+  salvarTudo();
+  fecharModal('modal-compra');
+  renderizarCompras(); atualizarDashboard();
+}
+
+function excluirCompra() {
+  const id = document.getElementById('cp-id').value;
+  if(!id || !confirm('Excluir esta compra?')) return;
+  compras = compras.filter(c => c.id != id);
+  salvarTudo();
+  fecharModal('modal-compra');
+  renderizarCompras(); atualizarDashboard();
+}
+
+function renderizarCompras() {
+  const tbody = document.getElementById('compras-tbody');
+  tbody.innerHTML = '';
+  const ordenado = [...compras].sort((a,b) => b.data.localeCompare(a.data));
+  if(ordenado.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:#999;">Nenhuma compra registrada.</td></tr>`;
+  } else {
+    ordenado.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.onclick = () => {
+        document.getElementById('cp-id').value = c.id;
+        document.getElementById('cp-data').value = c.data;
+        document.getElementById('cp-loja').value = c.loja;
+        document.getElementById('cp-produto').value = c.produto;
+        document.getElementById('cp-valor').value = c.valor;
+        document.getElementById('cp-pagamento').value = c.pagamento;
+        if(c.pagamento === 'Crédito') { document.getElementById('div-parcelas').style.display = 'block'; document.getElementById('cp-parcelas').value = c.parcelas; }
+        document.getElementById('btn-excluir-cp').style.display = 'inline-flex';
+        abrirModal('modal-compra');
+      };
+      const pagInfo = c.pagamento === 'Crédito' && c.parcelas > 1 ? `${c.parcelas}x de ${formatarMoeda(c.valor/c.parcelas)}` : c.pagamento;
+      tr.innerHTML = `
+        <td>${formatarData(c.data)}</td>
+        <td>${c.loja}</td>
+        <td class="hide-mobile" style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${c.produto}</td>
+        <td style="font-weight:600;">${formatarMoeda(c.valor)}</td>
+        <td class="hide-mobile">${pagInfo}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  // Cards
+  const mesAtual = new Date().getMonth(), anoAtual = new Date().getFullYear();
+  const totalMes = compras.filter(c => { const d = new Date(c.data+'T00:00:00'); return d.getMonth() === mesAtual && d.getFullYear() === anoAtual; }).reduce((s,c) => s + c.valor, 0);
+  const totalAno = compras.filter(c => new Date(c.data+'T00:00:00').getFullYear() === anoAtual).reduce((s,c) => s + c.valor, 0);
+  let aPagar = 0;
+  compras.forEach(c => {
+    if(c.pagamento === 'Crédito' && c.parcelas > 1) {
+      const d = new Date(c.data + 'T00:00:00');
+      const diff = (anoAtual - d.getFullYear()) * 12 + (mesAtual - d.getMonth());
+      const parcelasRestantes = Math.max(0, c.parcelas - diff);
+      aPagar += (c.valor / c.parcelas) * parcelasRestantes;
+    }
+  });
+  document.getElementById('compra-mes').textContent = formatarMoeda(totalMes);
+  document.getElementById('compra-ano').textContent = formatarMoeda(totalAno);
+  document.getElementById('compra-count').textContent = compras.length;
+  document.getElementById('compra-pagar').textContent = formatarMoeda(aPagar);
+}
+
+/* ======================== ESTOQUE ======================== */
+function abrirModalProduto() {
+  document.getElementById('form-produto').reset();
+  document.getElementById('pr-id').value = '';
+  document.getElementById('btn-excluir-pr').style.display = 'none';
+  abrirModal('modal-produto');
+}
+
+function salvarProduto(e) {
+  e.preventDefault();
+  const id = document.getElementById('pr-id').value;
+  const dados = {
+    id: id ? parseInt(id) : Date.now(),
+    nome: document.getElementById('pr-nome').value.trim(),
+    tipo: document.getElementById('pr-tipo').value,
+    marca: document.getElementById('pr-marca').value.trim(),
+    quantidade: parseInt(document.getElementById('pr-quantidade').value),
+    minimo: parseInt(document.getElementById('pr-minimo').value) || 0,
+    valor: parseFloat(document.getElementById('pr-valor').value) || 0,
+    validade: document.getElementById('pr-validade').value
+  };
+  if(id) {
+    const idx = estoque.findIndex(p => p.id == id);
+    estoque[idx] = dados;
+  } else estoque.push(dados);
+  salvarTudo();
+  fecharModal('modal-produto');
+  renderizarEstoque();
+}
+
+function excluirProduto() {
+  const id = document.getElementById('pr-id').value;
+  if(!id || !confirm('Excluir este produto?')) return;
+  estoque = estoque.filter(p => p.id != id);
+  salvarTudo();
+  fecharModal('modal-produto');
+  renderizarEstoque();
+}
+
+function renderizarEstoque() {
+  const tbody = document.getElementById('estoque-tbody');
+  tbody.innerHTML = '';
+  const ordenado = [...estoque].sort((a,b) => a.nome.localeCompare(b.nome));
+  if(ordenado.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:#999;">Nenhum produto cadastrado.</td></tr>`;
+  } else {
+    ordenado.forEach(p => {
+      const baixo = p.quantidade <= p.minimo;
+      const status = baixo ? '<span class="badge badge-red"><i class="ph ph-warning"></i> Baixo</span>' : '<span class="badge badge-green"><i class="ph ph-check"></i> OK</span>';
+      const tr = document.createElement('tr');
+      tr.onclick = () => {
+        document.getElementById('pr-id').value = p.id;
+        document.getElementById('pr-nome').value = p.nome;
+        document.getElementById('pr-tipo').value = p.tipo;
+        document.getElementById('pr-marca').value = p.marca || '';
+        document.getElementById('pr-quantidade').value = p.quantidade;
+        document.getElementById('pr-minimo').value = p.minimo;
+        document.getElementById('pr-valor').value = p.valor || '';
+        document.getElementById('pr-validade').value = p.validade || '';
+        document.getElementById('btn-excluir-pr').style.display = 'inline-flex';
+        abrirModal('modal-produto');
+      };
+      tr.innerHTML = `
+        <td><strong>${p.nome}</strong>${p.marca ? `<br><span style="color:var(--text-secondary); font-size:0.75rem;">${p.marca}</span>` : ''}</td>
+        <td class="hide-mobile">${p.tipo}</td>
+        <td style="font-weight:600; color:${baixo ? 'var(--red-danger)' : 'inherit'};">${p.quantidade}</td>
+        <td class="hide-mobile">${p.validade ? formatarData(p.validade) : '-'}</td>
+        <td>${status}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  document.getElementById('estoque-total').textContent = estoque.reduce((s,p) => s + p.quantidade, 0);
+  document.getElementById('estoque-tipos').textContent = new Set(estoque.map(p => p.tipo)).size;
+  document.getElementById('estoque-baixo').textContent = estoque.filter(p => p.quantidade <= p.minimo).length;
+  document.getElementById('estoque-valor').textContent = formatarMoeda(estoque.reduce((s,p) => s + (p.valor * p.quantidade), 0));
+}
+
+/* ======================== FINANCEIRO ======================== */
+function renderizarFinanceiro() {
+  const tbody = document.getElementById('finance-table-body');
+  tbody.innerHTML = '';
+  const ordenado = [...agendamentos].sort((a,b) => b.data.localeCompare(a.data));
+  if(ordenado.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:#999;">Nenhum agendamento registrado.</td></tr>`;
+  } else {
+    ordenado.forEach(a => {
+      const tr = document.createElement('tr');
+      tr.onclick = () => abrirModalEdicaoAgendamento(a.id);
+      tr.innerHTML = `
+        <td>${formatarData(a.data)}</td>
+        <td>${a.nome}</td>
+        <td class="hide-mobile">${a.procedimento}</td>
+        <td style="font-weight:600;">${formatarMoeda(a.valor)}</td>
+        <td><span class="badge badge-green"><i class="ph ph-check-circle"></i> Recebido</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+}
+
+/* ======================== SALDO DO MÊS ======================== */
+function mostrarSaldoMes() {
+  const mesAtual = new Date().getMonth(), anoAtual = new Date().getFullYear();
+  const entradas = agendamentos.filter(a => { const d = new Date(a.data+'T00:00:00'); return d.getMonth() === mesAtual && d.getFullYear() === anoAtual; }).reduce((s,a) => s + a.valor, 0);
+  const saidas = compras.filter(c => { const d = new Date(c.data+'T00:00:00'); return d.getMonth() === mesAtual && d.getFullYear() === anoAtual; }).reduce((s,c) => s + c.valor, 0);
+  alert(`📊 Resumo do Mês:\n\n💰 Entradas: ${formatarMoeda(entradas)}\n💸 Saídas (Compras): ${formatarMoeda(saidas)}\n\n✅ Saldo Líquido: ${formatarMoeda(entradas - saidas)}`);
+}
+
+/* ======================== INICIALIZAÇÃO ======================== */
+/* ======================== BACKUP E RESTAURAÇÃO ======================== */
+function exportarBackup() {
+  const backup = {
+    versao: 1,
+    dataExportacao: new Date().toISOString(),
+    agendamentos,
+    clientes,
+    compras,
+    estoque
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dataArquivo = new Date().toISOString().split('T')[0];
+  a.href = url;
+  a.download = `lash-studio-backup-${dataArquivo}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  localStorage.setItem('lash_ultimo_backup', new Date().toISOString());
+  alert('✅ Backup gerado com sucesso!\n\nSalve o arquivo em um local seguro (iCloud, Google Drive, WhatsApp para você mesma).');
+}
+
+function importarBackup(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const dados = JSON.parse(e.target.result);
+      if(!dados.agendamentos && !dados.clientes && !dados.compras && !dados.estoque) {
+        alert('❌ Arquivo inválido. Não parece ser um backup do Lash Studio.');
+        return;
+      }
+      const msg = `⚠️ ATENÇÃO\n\nVocê está prestes a SUBSTITUIR todos os dados atuais pelos dados do backup de ${new Date(dados.dataExportacao).toLocaleDateString('pt-BR')}.\n\nDeseja continuar?`;
+      if(!confirm(msg)) return;
+      agendamentos = dados.agendamentos || [];
+      clientes = dados.clientes || [];
+      compras = dados.compras || [];
+      estoque = dados.estoque || [];
+      salvarTudo();
+      atualizarDashboard();
+      renderizarAgenda(); renderizarClientes(); renderizarCompras(); renderizarEstoque(); renderizarFinanceiro();
+      alert('✅ Backup restaurado com sucesso!');
+    } catch(err) {
+      alert('❌ Erro ao ler o arquivo: ' + err.message);
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function verificarLembreteBackup() {
+  const ultimo = localStorage.getItem('lash_ultimo_backup');
+  if(!ultimo) return;
+  const dias = Math.floor((Date.now() - new Date(ultimo).getTime()) / (1000 * 60 * 60 * 24));
+  if(dias >= 7) {
+    setTimeout(() => {
+      if(confirm(`⚠️ Já se passaram ${dias} dias desde o último backup.\n\nDeseja exportar um backup agora para não perder seus dados?`)) {
+        exportarBackup();
+      }
+    }, 2000);
+  }
+}
+
+/* ======================== INICIALIZAÇÃO ======================== */
+atualizarDashboard();
+verificarLembreteBackup();
+</script>
+</body>
+</html>
